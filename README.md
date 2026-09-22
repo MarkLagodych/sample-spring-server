@@ -6,12 +6,16 @@ Build:
 ```sh
 ./gradlew bootJar
 ```
-(or on Windows):
+or on Windows:
 ```sh
 gradlew.bat bootJar
 ```
 
-Run:
+Run on port 80 (might require root previleges):
 ```sh
-java -jar build/libs/test-server-1.0.jar
+java -jar build/libs/test-server-1.1.jar --server.port=80
+```
+or run on the default port 8080:
+```sh
+java -jar build/libs/test-server-1.1.jar
 ```
