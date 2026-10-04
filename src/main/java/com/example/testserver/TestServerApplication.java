@@ -22,18 +22,12 @@ import jakarta.servlet.http.HttpServletRequest;
 @ControllerAdvice 
 public class TestServerApplication {
     
-    static private final LocalDateTime startupTime = LocalDateTime.now();
-
-    static private final String env = System.getenv().entrySet().stream()
-            .map(e -> e.getKey() + "=" + e.getValue())
-            .sorted()
-            .collect(Collectors.joining("\n"));
+    private static final LocalDateTime startupTime = LocalDateTime.now();
+    private final AtomicLong visitCount = new AtomicLong(0);
 
     public static void main(String[] args) {
         SpringApplication.run(TestServerApplication.class, args);
     }
-
-    final AtomicLong visitCount = new AtomicLong(0);
 
     @GetMapping({"/", "/index.html"})
     @ResponseBody
@@ -47,7 +41,7 @@ public class TestServerApplication {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Test Server</title>
+                    <title>Test Spring Server</title>
                 </head>
                 <body>
                     <h1>Hello world!</h1>
@@ -64,8 +58,6 @@ public class TestServerApplication {
                     <b>OS:</b> %s %s %s<br/>
                     <b>Memory:</b> %.2f MiB preallocated (%.2f MiB free) / %.2f MiB max<br/>
                     <b>Processors:</b> %s<br/>
-                    <b>Environment variables:</b><br/>
-                    <pre>%s</pre>
                 </body>
             </html>
             """.formatted(
@@ -93,8 +85,7 @@ public class TestServerApplication {
                 (float) Runtime.getRuntime().totalMemory() / 1024.0 / 1024.0,
                 (float) Runtime.getRuntime().freeMemory() / 1024.0 / 1024.0,
                 (float) Runtime.getRuntime().maxMemory() / 1024.0 / 1024.0,
-                Runtime.getRuntime().availableProcessors(),
-                env
+                Runtime.getRuntime().availableProcessors()
             );
     }
 
@@ -110,7 +101,7 @@ public class TestServerApplication {
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Test Server - Error</title>
+                    <title>Test Spring Server - Error</title>
                 </head>
                 <body>
                     <h1>%s occurred!</h1>
